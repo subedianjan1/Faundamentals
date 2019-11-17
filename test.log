@@ -1,0 +1,122 @@
+============================= test session starts =============================
+platform win32 -- Python 3.7.3, pytest-4.6.3, py-1.8.0, pluggy-0.12.0 -- c:\users\anjan\appdata\local\programs\python\python37\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Projects\Github\Python-Test-Work\Faundamentals
+plugins: dependency-0.4.0, logger-0.5.1, mock-1.10.4
+collecting ... collected 18 items
+
+Test_Asserts.py::testEqual FAILED                                        [  5%]
+Test_Asserts.py::testNotEqual PASSED                                     [ 11%]
+Test_Asserts.py::testLessThan PASSED                                     [ 16%]
+Test_Asserts.py::testinString FAILED                                     [ 22%]
+Test_Asserts.py::testTrue PASSED                                         [ 27%]
+Test_Asserts.py::testSkipif SKIPPED                                      [ 33%]
+Test_Expect.py::test_MultAsserts FAILED                                  [ 38%]
+Test_Expect.py::test_Expects FAILED                                      [ 44%]
+Test_TryCatch.py::test_trycatch FAILED                                   [ 50%]
+test_skip1.py::test_test1 SKIPPED                                        [ 55%]
+test_skip1.py::test_test2 SKIPPED                                        [ 61%]
+test_skip1.py::test_test3 SKIPPED                                        [ 66%]
+Moc tests/test_MocFuncsPy.py::test_example PASSED                        [ 72%]
+Moc tests/test_MocFuncsUnit.py::FirstMoc::test_example PASSED            [ 77%]
+Moc tests/test_MocFuncsUnitCom Try.py::FirstMoc::test_Moc_call FAILED    [ 83%]
+Moc tests/test_MocFuncsUnitCom.py::FirstMoc::test_example_call PASSED    [ 88%]
+Moc tests/test_MocFuncsUnitCom.py::FirstMoc::test_example_comb0 PASSED   [ 94%]
+Moc tests/test_MocFuncsUnitCom.py::FirstMoc::test_example_return PASSED  [100%]
+
+================================== FAILURES ===================================
+__________________________________ testEqual __________________________________
+
+    def testEqual():
+>       assert  2*2 == 5, "Expected fail"
+E       AssertionError: Expected fail
+E       assert 4 == 5
+E         -4
+E         +5
+
+Test_Asserts.py:19: AssertionError
+________________________________ testinString _________________________________
+
+    def testinString():
+>       assert 'lk' in ('hello', "Expected fail")
+E       AssertionError: assert 'lk' in ('hello', 'Expected fail')
+
+Test_Asserts.py:29: AssertionError
+______________________________ test_MultAsserts _______________________________
+
+    def test_MultAsserts():
+>       assert 'lt' in ('hello') # fails here, so rest not executed
+E       AssertionError: assert 'lt' in 'hello'
+
+Test_Expect.py:7: AssertionError
+________________________________ test_Expects _________________________________
+
+    def test_Expects():
+        expect  ( 1==2, "Continues testing after this" ) # fails here, so rest is still executed
+        expect  ( 2==2, )
+        expect  ( 3==3, )
+        expect  ( 4==5, "contines testing after this" ) # fails here and continues
+        expect  ( 4==4, )
+        expect  ( 'lt' not in ('heelo') )
+        assert 'll' in ('hello')
+>       assert_expectations()
+
+Test_Expect.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def assert_expectations():
+        'raise an assert if there are any failed expectations'
+        if _failed_expectations:
+>           assert False, _report_failures()
+E           AssertionError: [93m
+E           
+E           assert_expectations() called at[0m
+E           [4m[94m"C:\Projects\Github\Python-Test-Work\Faundamentals\Test_Expect.py:19"[0m[93m in test_Expects()
+E           
+E           [91m[4mFailed Expectations : 2
+E           [0m
+E           1: [91mFailed at "[0m[94m[4mC:\Projects\Github\Python-Test-Work\Faundamentals\Test_Expect.py:12[0m[91m", in test_Expects()
+E           	[1m[4mErrorMessage:[0m[91m	Continues testing after this[0m
+E               expect  ( 1==2, "Continues testing after this" ) # fails here, so rest is still executed
+E           
+E           2: [91mFailed at "[0m[94m[4mC:\Projects\Github\Python-Test-Work\Faundamentals\Test_Expect.py:15[0m[91m", in test_Expects()
+E           	[1m[4mErrorMessage:[0m[91m	contines testing after this[0m
+E               expect  ( 4==5, "contines testing after this" ) # fails here and continues
+
+c:\users\anjan\appdata\local\programs\python\python37\lib\site-packages\delayed_assert\delayed_assert.py:61: AssertionError
+________________________________ test_trycatch ________________________________
+
+    def test_trycatch():
+    
+        with pytest.raises(Exception) as e:
+>           assert 1 == 1
+E           Failed: DID NOT RAISE <class 'Exception'>
+
+Test_TryCatch.py:8: Failed
+___________________________ FirstMoc.test_Moc_call ____________________________
+
+self = <test_MocFuncsUnitCom Try.FirstMoc testMethod=test_Moc_call>
+summ_mock = <MagicMock name='summ' id='2167326399456'>
+
+    @patch('Funcs.summ')
+    #replacing the real process and provide return value of 9
+    def test_Moc_call(self, summ_mock):
+        Funcs.summ(2,3) # dont't know why we need to call it here?? but fails if we don't.
+        summ_mock.assert_called_with(2,3)# does not test for return value. Tests for the function
+        #is called with the correct arguments
+        summ_mock.reset_mock()
+        result = Funcs.summ(2,4)
+>       summ_mock.assert_not_called()
+E       AssertionError: Expected 'summ' to not have been called. Called 1 times.
+E       
+E       pytest introspection follows:
+E       
+E       Args:
+E       assert (2, 4) == ()
+E         Left contains 2 more items, first extra item: 2
+E         Full diff:
+E         - (2, 4)
+E         + ()
+
+Moc tests\test_MocFuncsUnitCom Try.py:39: AssertionError
+================ 6 failed, 8 passed, 4 skipped in 0.73 seconds ================
